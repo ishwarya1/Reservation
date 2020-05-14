@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnsubmit);
         btnReset = findViewById(R.id.btnreset);
 
-        dp.updateDate(2019, 5, 1);
+        dp.updateDate(2020, 5, 1);
         tp.setCurrentHour(19);
         tp.setCurrentMinute(30);
 
