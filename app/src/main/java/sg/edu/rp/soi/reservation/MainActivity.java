@@ -50,28 +50,101 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     cbMsg = "Non-smoking Area";
                 }
+                String hour = tp.getCurrentHour().toString();
 
-                Context context = MainActivity.this;
-                CharSequence text = "Name: " + name + "\nMobile Number: " + number + "\nNo. of Pax: " + pax + "\nDate: " + dp.getDayOfMonth() + "/" + (dp.getMonth() + 1 ) + "/" + dp.getYear() + "\nTime: " +  ( "Time is "+  tp.getCurrentHour() + ":" + tp.getCurrentMinute()) + "\nTable: " + cbMsg;
-                int duration = Toast.LENGTH_SHORT;
+                String min = tp.getCurrentMinute().toString();
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+
+
+                if (hour.length() == 1){
+
+                    hour = "0" + hour;
+
+                }
+
+
+
+                if (min.length() == 1) {
+
+                    min = "0" + min;
+
+                }
+
+
+
+                if (name.isEmpty() || numInput.length() != 8 || paxInput.length() == 0){
+
+
+
+                    Toast.makeText(MainActivity.this, "One or more of the information is empty", Toast.LENGTH_LONG).show();
+
+
+
+                }else{
+
+
+
+                    String firstName = "Name: " + nameInput.getText();
+
+                    String secondPhone = "Phone: " + numInput.getText();
+
+                    String thirdGuest = "No. Of Guest: " + paxInput.getText();
+
+                    String date = "Date: " + dp.getDayOfMonth() + "/" + dp.getMonth() + "/" + dp.getYear();
+
+                    String time = "Time: " + hour + ":" + min;
+
+                    String smoking = "Smoking: " + cbMsg;
+
+
+
+                    Toast.makeText(MainActivity.this, name + "\n" + number + "\n" + pax + "\n" + date + "\n" + time + "\n" + smoking, Toast.LENGTH_LONG).show();
+
+
+
+                }
+
+
+
+
+
+
+
             }
-        });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        });
+        tp.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
-            public void onClick(View v) {
-                dp.updateDate(2020, 5, 15);
-                tp.setCurrentHour(19);
-                tp.setCurrentMinute(30);
+            public void onTimeChanged(TimePicker v, int hourOfDay, int min) {
+               if(!(hourOfDay>=8 && hourOfDay<=20)){
+                   Toast.makeText(MainActivity.this,"Timimg from 8am to 8:59.",Toast.LENGTH_LONG).show();
+                   updateTime(8,0);
+               }
 
-                nameInput.setText("");
-                numInput.setText("");
-                paxInput.setText("");
-                cbEnabled.setChecked(!cbEnabled.isChecked());
             }
         });
+btnReset.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+       reset();
     }
+});
+
+
+    }
+
+    private void updateTime(int hour, int min) {
+        tp.setCurrentMinute(min);
+        tp.setCurrentHour(hour);
+    }
+
+    private void reset() {
+        updateTime(19,30);
+        dp.updateDate(2020,5,1);
+        nameInput.setText("");
+        paxInput.setText("");
+        numInput.setText("");
+        cbEnabled.setEnabled(false);
+    }
+
 }
